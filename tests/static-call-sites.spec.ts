@@ -73,6 +73,14 @@ describe('skill call sites', () => {
     assert.match(loaded.content, /pstack_spawn/)
   })
 
+  it('makes Arena artifact handoff authoritative in DSH', async () => {
+    const arena = await readFile(join(SKILLS, 'arena', 'SKILL.md'), 'utf8')
+    assert.match(arena, /only completion channel/)
+    assert.match(arena, /Do not invoke `\/poteto-mode` from a candidate/)
+    assert.match(arena, /`send_message` as optional/)
+    assert.match(arena, /inspect the assigned directory after settlement/)
+  })
+
   it('exposes pstack_spawn without model or effort fields', () => {
     const tool = spawnTool({
       roles: new RoleEffortMap(),

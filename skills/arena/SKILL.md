@@ -30,11 +30,13 @@ The N candidates will receive the same prompt, so the prompt is the contract.
 
 ## Phase B: Fan out
 
-Spawn all N subagents in one message with `pstack_spawn`, `role: arena-runners`, `run_in_background: true`, `route_index` matching the overlay list when present. Do not send `model`. Follow [`../setup-pstack/references/spawn.md`](../setup-pstack/references/spawn.md). Each gets the task, the path to the shared grounding, its own output path, and instructions to produce both the artifact and a short rationale.
+Spawn all N subagents in one message with `pstack_spawn`, `role: arena-runners`, `run_in_background: true`, `route_index` matching the overlay list when present. Do not send `model`. Follow [`../setup-pstack/references/spawn.md`](../setup-pstack/references/spawn.md). Each gets the task, the path to the shared grounding, its own output path, and instructions to produce both the artifact and a short rationale. The candidate's output directory is the only completion channel: write the required artifact first, then the rationale. Do not invoke `/poteto-mode` from a candidate; it is a parent/session mode and is intentionally not model-invocable in DSH. Treat `send_message` as optional and never wait for it before writing the files.
+
+The candidate prompt must state the exact required filenames and output directory. Candidates should create the directory if needed. A final prose response or settlement message is supplemental and is not evidence of completion.
 
 Each rationale names the alternatives the candidate considered and what it rejected.
 
-If a candidate fails to produce output, proceed with N-1 and note the dropout in the synthesis record.
+If a candidate fails to produce output, proceed with N-1 and note the dropout in the synthesis record. Before classifying a dropout, inspect the assigned directory after settlement and distinguish a missing artifact from a missing message or missing usage telemetry.
 
 ## Phase C: Cross-judge
 

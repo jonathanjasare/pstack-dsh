@@ -20,6 +20,8 @@ ask /arena for a second opinion on this thread and our approach
 
 Your current design becomes one candidate among several, and the synthesis tells you whether the panel found something better or confirmed what you had. Cheap insurance before a costly commitment.
 
+In DSH, a candidate's output directory is the completion signal. Tell each candidate the exact artifact and rationale paths, have it write those files before any optional notification, and let the parent inspect the directory after settlement. Candidates cannot invoke `/poteto-mode`; it is a parent/session mode, not a candidate-invocable skill. A missing `send_message` result or usage telemetry is not by itself a dropout when the required files exist.
+
 ## Check independent slices in parallel
 
 ```text
