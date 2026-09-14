@@ -235,8 +235,13 @@ export async function buildCatalog(host: CatalogHost, signal?: AbortSignal): Pro
         }
       }
 
-      const selectable = oauthSignedIn || keyPresent
-      const source: LiveRoute['source'] = oauthSignedIn ? 'oauth' : 'api-key'
+      // Cursor passthrough authenticates through the local Cursor CLI. A
+      // registered provider with live models therefore needs no DSH credential.
+      const localPassthrough = provider.id === 'cursor'
+      const selectable = oauthSignedIn || keyPresent || localPassthrough
+      const source: LiveRoute['source'] = oauthSignedIn
+        ? 'oauth'
+        : localPassthrough ? 'local' : 'api-key'
       if (!selectable) continue
 
       for (const model of models) {

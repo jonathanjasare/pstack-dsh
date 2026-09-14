@@ -46,6 +46,22 @@ Two steps.
 
 Model choices follow DSH login/logout and catalog notifications. **Refresh models** also updates the choices without replacing unsaved role/effort edits. A selected route that becomes unavailable stays visibly marked. Newly registered, signed-in `pi-*` and `agy-*` routes are discovered without a second provider allowlist.
 
+The locally authenticated `cursor` provider is also discovered when
+[dsh-cursor-passthrough](https://github.com/mingzhong15/dsh-cursor-passthrough)
+is installed and exposes live models. This lets a DSH parent assign a pstack
+role to a Cursor subscription model without storing Cursor credentials in DSH.
+
+安装并启用 [dsh-cursor-passthrough](https://github.com/mingzhong15/dsh-cursor-passthrough)
+后，pstack 也会发现由本机 Cursor CLI 登录的 `cursor` 提供商。这样 DSH 父对话可以把指定角色分配给 Cursor 订阅模型，无需在 DSH 中保存 Cursor 凭据。
+
+For mixed routing, keep the parent conversation on a native DSH provider and
+assign Cursor models to selected roles in **Settings → pstack**. `pstack_spawn`
+then routes those children through Cursor. If the parent itself uses Cursor
+passthrough, it runs through Cursor ACP and cannot call DSH-only tools such as
+`pstack_spawn`; use Cursor's own subagents in that case.
+
+混合路由时，请让父对话使用 DSH 原生提供商，再在 **设置 → pstack** 中把部分角色分配给 Cursor 模型。若父对话本身使用 Cursor passthrough，该轮会通过 Cursor ACP 执行，无法调用 `pstack_spawn` 等 DSH 专用工具；此时请使用 Cursor 自带的子代理。
+
 第一次用可以看 [pstack 指南](./docs/guide/README.md)。
 
 New here? The [pstack guide](./docs/guide/README.md) walks through a first real task.

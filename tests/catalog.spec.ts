@@ -98,6 +98,27 @@ describe('buildCatalog', () => {
     assert.equal(catalog.routes.some(route => route.provider === 'openai'), false)
   })
 
+  it('lists the live local Cursor passthrough route without a DSH credential record', async () => {
+    const home = await mkdtemp(join(tmpdir(), 'pstack-dsh-cursor-'))
+    const catalog = await buildCatalog({
+      dshHome: home,
+      env: {},
+      llm: llmStub({
+        providers: [{ id: 'cursor', name: 'Cursor passthrough' }],
+        models: {
+          cursor: [
+            { id: 'grok-4.6-fast-xhigh', name: 'Cursor Grok 4.6 Extra High Fast' },
+            { id: 'claude-fable-5-1-thinking-max', name: 'Claude Fable 5.1 Max Thinking' },
+          ],
+        },
+      }),
+    })
+
+    assert.equal(catalog.selectableCount, 2)
+    assert.deepEqual(catalog.routes.map(route => route.provider), ['cursor', 'cursor'])
+    assert.deepEqual(catalog.routes.map(route => route.source), ['local', 'local'])
+  })
+
   it('surfaces signed-in oauth store ids that are not yet registered', async () => {
     const home = await mkdtemp(join(tmpdir(), 'pstack-dsh-oauth-'))
     await writeFile(

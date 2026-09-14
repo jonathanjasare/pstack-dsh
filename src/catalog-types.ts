@@ -9,9 +9,9 @@ export interface LiveRoute {
   readonly providerName: string
   readonly model: string
   readonly modelName: string
-  /** True when this route can be selected for spawn (live adapter + logged-in credential). */
+  /** True when this route can be selected for spawn (live adapter + available authentication). */
   readonly selectable: boolean
-  readonly source: 'api-key' | 'oauth'
+  readonly source: 'api-key' | 'oauth' | 'local'
   readonly oauthSignedIn?: boolean
   readonly routeRegistered: boolean
   readonly efforts: readonly LiveEffort[]
